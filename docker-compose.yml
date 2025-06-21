@@ -24,4 +24,4 @@ services:
     volumes:
       - /dev/net/tun:/dev/net/tun 
     command: >
-      python3 /app/api.py
+      /bin/sh -c "./run.sh & python3 /app/api.py"
