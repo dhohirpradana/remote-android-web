@@ -9,4 +9,4 @@ sudo zerotier-cli join <network-id>
 docker network create reverse-proxy
 docker compose up --build -d
 
-published port 8000 & 5000
+published port are 8000 & 5000
