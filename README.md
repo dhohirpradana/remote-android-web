@@ -1,6 +1,12 @@
+
 git clone https://github.com/dhohirpradana/remote-android-web.git
 cd remote-android-web
-docker network create reverse-proxy
 
-update .env file values
+(update .env file values)
+
+curl -s https://install.zerotier.com | sudo bash
+sudo zerotier-cli join <network-id>
+docker network create reverse-proxy
 docker compose up --build -d
+
+published port 8000 & 5000
