@@ -11,6 +11,7 @@ RUN apk add --no-cache \
     py3-pip
 
 COPY api.py /app/api.py
-WORKDIR /app
+WORKDIR /ws-scrcpy
 
 RUN pip3 install flask
+ENTRYPOINT ["/bin/sh", "-c", "npm start & python3 /app/api.py & wait"]

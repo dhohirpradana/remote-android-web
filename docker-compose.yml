@@ -22,6 +22,4 @@ services:
     cap_add:
       - NET_ADMIN
     volumes:
-      - /dev/net/tun:/dev/net/tun 
-    command: >
-      /bin/sh -c "./run.sh & python3 /app/api.py"
+      - /dev/net/tun:/dev/net/tun
