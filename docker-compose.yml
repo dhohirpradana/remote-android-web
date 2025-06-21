@@ -10,6 +10,7 @@ services:
       LETSENCRYPT_HOST: ${DOMAIN_SCRCPY}
       VIRTUAL_HOST: ${DOMAIN_SCRCPY}
       VIRTUAL_PORT: "8000"
+      ZEROTIER_NETWORK_ID: ${ZEROTIER_NETWORK_ID}
     ports:
       - "8000:8000"
       - "5000:5000"
@@ -23,12 +24,15 @@ services:
       - reverse-proxy
     cap_add:
       - NET_ADMIN
+    devices:
+      - /dev/net/tun
     volumes:
       - /dev/net/tun:/dev/net/tun
       - zerotier-one:/var/lib/zerotier-one
     command: >
-      /bin/sh -c "zerotier-one &&
-                  zerotier-cli join ${ZEROTIER_NETWORK_ID} &&
+      /bin/sh -c "/usr/local/bin/zerotier-one -d &&
+                  sleep 3 &&
+                  /usr/local/bin/zerotier-cli join $$ZEROTIER_NETWORK_ID &&
                   python3 /app/api.py"
 
 volumes:

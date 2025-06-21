@@ -1,12 +1,20 @@
 FROM emptysuns/scrcpy-web:v0.1
-LABEL maintainer="IDNA"
 
-RUN apt-get update && apt-get install -y curl gnupg \
-    && curl -s https://install.zerotier.com | bash
+RUN apk add --no-cache \
+    bash \
+    ca-certificates \
+    iproute2 \
+    iptables \
+    libstdc++ \
+    libc6-compat \
+    python3 \
+    py3-pip
 
-RUN apt-get install -y python3 python3-pip \
-    && pip3 install flask
+COPY zerotier-one /usr/local/bin/zerotier-one
+RUN chmod +x /usr/local/bin/zerotier-one && \
+    ln -sf /usr/local/bin/zerotier-one /usr/local/bin/zerotier-cli
 
 COPY api.py /app/api.py
+WORKDIR /app
 
-CMD ["sh", "-c", "zerotier-one & python3 /app/api.py"]
+RUN pip3 install flask
