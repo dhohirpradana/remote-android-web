@@ -10,10 +10,6 @@ RUN apk add --no-cache \
     python3 \
     py3-pip
 
-COPY zerotier-one /usr/local/bin/zerotier-one
-COPY zerotier-cli /usr/local/bin/zerotier-cli
-RUN chmod +x /usr/local/bin/zerotier-*
-
 COPY api.py /app/api.py
 WORKDIR /app
 

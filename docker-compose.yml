@@ -3,41 +3,25 @@ version: '3.8'
 services:
   mdm-scrcpy:
     build: .
-    hostname: mdm-scrcpy
     container_name: mdm-scrcpy
+    network_mode: host
+    ports:
+      - "8000:8000"
+      - "5000:5000"
     environment:
       CERT_NAME: ${DOMAIN_SCRCPY}
       LETSENCRYPT_HOST: ${DOMAIN_SCRCPY}
       VIRTUAL_HOST: ${DOMAIN_SCRCPY}
       VIRTUAL_PORT: "8000"
-      ZEROTIER_NETWORK_ID: ${ZEROTIER_NETWORK_ID}
-    ports:
-      - "8000:8000"
-      - "5000:5000"
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "nc -zv localhost 8000 || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3
-    networks:
-      - reverse-proxy
     cap_add:
       - NET_ADMIN
-    devices:
-      - /dev/net/tun
     volumes:
-      - /dev/net/tun:/dev/net/tun
-      - zerotier-one:/var/lib/zerotier-one
+      - /dev/net/tun:/dev/net/tun 
     command: >
-      /bin/sh -c "/usr/local/bin/zerotier-one -d &&
-                  sleep 3 &&
-                  /usr/local/bin/zerotier-cli join $$ZEROTIER_NETWORK_ID &&
-                  python3 /app/api.py"
-
-volumes:
-  zerotier-one:
-
-networks:
-  reverse-proxy:
-    external: true
+      python3 /app/api.py
