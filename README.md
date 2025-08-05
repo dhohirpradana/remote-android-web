@@ -1,5 +1,6 @@
 
 git clone https://github.com/dhohirpradana/remote-android-web.git
+
 cd remote-android-web
 
 (update .env file values)
